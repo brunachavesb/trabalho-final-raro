@@ -6,4 +6,8 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   root to: "home#index"
+
+  devise_scope :user do
+    get 'sair', to: 'custom_sessions#destroy', as: :custom_destroy_user_session
+  end
 end
