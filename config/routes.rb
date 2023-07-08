@@ -5,9 +5,11 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
+  resources :projects
+
   root to: "home#index"
 
   devise_scope :user do
-    get 'sair', to: 'custom_sessions#destroy', as: :custom_destroy_user_session
+    get "sair", to: "custom_sessions#destroy", as: :custom_destroy_user_session
   end
 end

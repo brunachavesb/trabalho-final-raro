@@ -1,0 +1,7 @@
+<h1>Detalhes do Projeto</h1>
+
+<p><strong>ID do Projeto:</strong> <%= @project.project_id %></p>
+
+<%= link_to 'Editar', edit_project_path(@project) %> |
+<%= button_to 'Excluir', project_path(@project), method: :delete, data: { confirm: 'Tem certeza que deseja excluir esse projeto?' } %> |
+<%= link_to 'Voltar para Meus Projetos', projects_path %>
