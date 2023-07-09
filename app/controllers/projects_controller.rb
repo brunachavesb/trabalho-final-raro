@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:show, :update, :destroy]
 
   def index
     @projects = current_user.projects
@@ -34,9 +34,6 @@ class ProjectsController < ApplicationController
   end
 
   def show
-  end
-
-  def edit
   end
 
   def update
