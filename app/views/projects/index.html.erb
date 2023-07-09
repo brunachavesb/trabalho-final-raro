@@ -1,32 +1,60 @@
-<h1>Meus Projetos</h1>
-
-<% if @projects.any? %>
-  <table>
-    <thead>
-      <tr>
-        <th>ID do Projeto</th>
-        <th>Nome do Projeto</th>
-        <th>URL do Projeto</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @projects.each do |project| %>
-        <tr>
-          <td><%= link_to project.project_id, project_path(project) %></td>
-          <td><%= project.name %></td>
-          <td><%= link_to project.url, project.url %></td>
-          <td>
-            <%= button_to 'Excluir', project_path(project), method: :delete, data: { confirm: 'Tem certeza que deseja excluir esse projeto?' } %>
-          </td>
-        </tr>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pomodoro</title>
+    <meta name="description" content="">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      .body-bg {
+          background-color: #9921e8;
+          background-image: linear-gradient(315deg, #9921e8 0%, #5f72be 74%);
+      }
+    </style>
+  </head>
+  <body class="body-bg min-h-screen pt-12 md:pt-3 pb-6 px-2 md:px-0" style="font-family:'Lato',sans-serif;">
+    <header class="flex justify-between items-center px-4 py-2">
+      <div class="flex items-center">
+        <h1 class="ml-2 text-white font-bold text-3xl">Pomodoro</h1>
+      </div>
+      <%= link_to "Sair", custom_destroy_user_session_path, method: :get, class: "mt-4 inline-block bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded" %>
+    </header>
+    <div class="pt-20">
+      <h1 class="text-2xl font-bold text-white text-center text-shadow mt-8">Meus Projetos</h1>
+      <% if @projects.any? %>
+        <table class="bg-white mt-8 mx-auto rounded-lg shadow-lg">
+          <thead>
+            <tr>
+              <th class="px-4 py-2 text-violet-800">ID do Projeto</th>
+              <th class="px-4 py-2 text-violet-800">Nome do Projeto</th>
+              <th class="px-4 py-2 text-violet-800">URL do Projeto</th>
+              <th class="px-4 py-2 text-violet-800">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @projects.each do |project| %>
+              <tr>
+                <td class="border px-4 py-2 text-violet-600"><%= link_to project.project_id, project_path(project), class: "hover:text-violet-900" %></td>
+                <td class="border px-4 py-2 text-violet-600"><%= project.name %></td>
+                <td class="border px-4 py-2 text-violet-600">
+                  <%= link_to project.url, project.url, target: "_blank", class: "hover:text-violet-900" %>
+                </td>
+                <td class="border px-4 py-2 text-white">
+                  <%= button_to 'Excluir', project_path(project), method: :delete, data: { confirm: 'Tem certeza que deseja excluir esse projeto?' }, class: 'bg-purple-500 hover:bg-purple-400 ext-white font-bold py-2 px-4 rounded' %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p class="text-white text-center mt-7 mb-5">Nenhum projeto encontrado.</p>
       <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p>Nenhum projeto encontrado.</p>
-<% end %>
-
-<%= link_to 'Novo Projeto', new_project_path %>
-
-<%= link_to "Sair", custom_destroy_user_session_path, method: :get, class: "btn btn-primary" %>
+      <div class="text-center mx-auto">
+        <%= link_to 'Novo Projeto', new_project_path, class: 'mt-4 inline-block bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded shadow-lg hover:shadow-xl transition duration-200 block text-center' %>
+      </div>
+    </div>
+  </body>
+</html>
