@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   resources :projects
 
-  root to: "home#index"
+  root to: "projects#index"
 
   devise_scope :user do
     get "sair", to: "custom_sessions#destroy", as: :custom_destroy_user_session

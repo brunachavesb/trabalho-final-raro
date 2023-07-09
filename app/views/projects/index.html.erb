@@ -1,15 +1,32 @@
 <h1>Meus Projetos</h1>
 
 <% if @projects.any? %>
-  <ul>
-    <% @projects.each do |project| %>
-      <li>
-        <%= link_to project.project_id, project_path(project) %>
-      </li>
-    <% end %>
-  </ul>
+  <table>
+    <thead>
+      <tr>
+        <th>ID do Projeto</th>
+        <th>Nome do Projeto</th>
+        <th>URL do Projeto</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @projects.each do |project| %>
+        <tr>
+          <td><%= link_to project.project_id, project_path(project) %></td>
+          <td><%= project.name %></td>
+          <td><%= link_to project.url, project.url %></td>
+          <td>
+            <%= button_to 'Excluir', project_path(project), method: :delete, data: { confirm: 'Tem certeza que deseja excluir esse projeto?' } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% else %>
   <p>Nenhum projeto encontrado.</p>
 <% end %>
 
 <%= link_to 'Novo Projeto', new_project_path %>
+
+<%= link_to "Sair", custom_destroy_user_session_path, method: :get, class: "btn btn-primary" %>
