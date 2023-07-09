@@ -33,9 +33,9 @@ gem "jbuilder"
 # Use Redis adapter to run Action Cable in production
 gem "redis", "~> 4.0"
 
-gem 'devise'
+gem "devise"
 
-gem 'devise-i18n'
+gem "devise-i18n"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -49,8 +49,9 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
-gem 'dotenv', '~> 2.7', require: 'dotenv/load'
+gem "dotenv", "~> 2.7", require: "dotenv/load"
 
+gem "httparty"
 
 # Use Sass to process CSS
 # gem "sassc-rails"
