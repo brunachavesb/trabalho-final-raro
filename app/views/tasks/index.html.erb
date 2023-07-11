@@ -1,0 +1,35 @@
+<h1>Registro de Tarefas</h1>
+
+<%= will_paginate @tasks %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Projeto</th>
+      <th>Descrição</th>
+      <th>Início</th>
+      <th>Término</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tasks.each do |task| %>
+      <tr>
+        <td><%= task.project.name %></td>
+        <td><%= task.description %></td>
+        <td><%= task.started_at %></td>
+        <td><%= task.finished_at %></td>
+        <td>
+          <% unless task.finished %>
+            <%= link_to "Iniciar", task_path(task), method: :put, data: { confirm: "Tem certeza que deseja iniciar esta tarefa?" }, params: { task: { started: true } } %>          <% end %>
+          <%= link_to "Editar", edit_task_path(task) %>
+          <%= link_to "Excluir", task_path(task), method: :delete, data: { confirm: "Tem certeza que deseja excluir esta tarefa?" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @tasks %>
+
+<%= link_to "Nova Tarefa", new_task_path %>

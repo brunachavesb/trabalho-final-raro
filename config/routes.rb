@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   resources :projects
+  resources :tasks
 
   root to: "projects#index"
 
