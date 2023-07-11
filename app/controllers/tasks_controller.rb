@@ -3,6 +3,10 @@ class TasksController < ApplicationController
     @tasks = Task.order(created_at: :desc).paginate(page: params[:page], per_page: 20)
   end
 
+  def show
+    @task = Task.find(params[:id])
+  end
+
   def new
     @task = Task.new
   end

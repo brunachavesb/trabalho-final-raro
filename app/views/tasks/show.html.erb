@@ -1,0 +1,9 @@
+<h1>Tarefa</h1>
+
+<p><strong>Projeto:</strong> <%= @task.project.name %></p>
+<p><strong>Nome:</strong> <%= @task.name %></p>
+<p><strong>Descrição:</strong> <%= @task.description %></p>
+<p><strong>Início:</strong> <%= @task.started_at %></p>
+<p><strong>Término:</strong> <%= @task.finished_at %></p>
+
+<%= link_to "Voltar", tasks_path %>

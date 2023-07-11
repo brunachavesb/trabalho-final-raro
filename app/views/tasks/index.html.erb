@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Projeto</th>
+      <th>Nome</th>
       <th>Descrição</th>
       <th>Início</th>
       <th>Término</th>
@@ -16,6 +17,7 @@
     <% @tasks.each do |task| %>
       <tr>
         <td><%= task.project.name %></td>
+        <td><%= task.name %></td>
         <td><%= task.description %></td>
         <td><%= task.started_at %></td>
         <td><%= task.finished_at %></td>
