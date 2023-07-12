@@ -1,78 +1,95 @@
-<div class="task-container">
-  <a href="<%= tasks_path %>">Voltar</a>
-  <h1>
-    Nome: <%= @task.name %>
-  </h1>
-  <div>
-    Descrição: <%= @task.description %>
-  </div>
-  <div>
-    <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
-  </div>
-  <div>
-    <%= button_to "Iniciar", start_task_path(@task), method: :put, id: "start-btn" %>
-    <%= button_to "Parar", stop_task_path(@task), method: :put, id: "stop-btn" if @task.started && !@task.finished %>
-    <%= button_to "Editar", edit_task_path(@task), method: :get, id: "edit-btn" if @task.finished %>
-    <%= form_with model: @task, url: task_path(@task), method: :patch, id: "edit-form" do |f| %>
-      <%= f.datetime_field :finished_at, id: "finish-time" %>
-      <%= f.submit "Salvar", id: "save-btn" %>
-    <% end %>
-  </div>
-</div>
-<script>
-  function onDOMContentLoaded() {
-    let timer;
-    let startedAt;
-    let editting = false;
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pomodoro</title>
+    <meta name="description" content="">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      .body-bg {
+          background-color: #9921e8;
+          background-image: linear-gradient(315deg, #9921e8 0%, #5f72be 74%);
+      }
+    </style>
+  </head>
+  <body class="body-bg min-h-screen pt-12 md:pt-20 pb-6 px-2 md:px-0" style="font-family:'Lato',sans-serif;">
+    <div class="task-container">
+      <div class="text-2xl font-bold text-white text-center">Nome:</div>
+      <div class="text-white text-center"><%= @task.name %></div>
+      <h1 class="text-2xl font-bold text-white text-center mt-4">Descrição:</h1>
+      <div class="text-white text-center"><%= @task.description %></div>
+      <div class="text-white text-center mt-10">
+        <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+      </div>
+      <div class="flex justify-center mt-4">
+        <%= button_to "Iniciar", start_task_path(@task), method: :put, id: "start-btn", class: "bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded mr-2" %>
+        <%= button_to "Parar", stop_task_path(@task), method: :put, id: "stop-btn", class: "bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded mr-2", disabled: !@task.started || @task.finished %>
+        <%= button_to "Editar", edit_task_path(@task), method: :get, id: "edit-btn", class: "bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded mr-2", hidden: !@task.finished %>
+        <%= form_with model: @task, url: task_path(@task), method: :patch, id: "edit-form", class: "hidden" do |f| %>
+          <%= f.datetime_field :finished_at, id: "finish-time", class: "bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 mt-2" %>
+          <%= f.submit "Salvar", id: "save-btn", class: "bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mt-2" %>
+        <% end %>
+      </div>
+      <%= link_to 'Voltar', tasks_path, class: "text-white hover:text-purple-900 hover:underline mt-4 block text-center" %>
+    </div>
+    <script>
+      function onDOMContentLoaded() {
+        let timer;
+        let startedAt;
+        let editting = false;
 
-    let startBtn = document.getElementById("start-btn");
-    if (startBtn) {
-      startBtn.addEventListener("click", function (e) {
-        e.preventDefault()
-        timer = setInterval(startTimer, 100);
-        startedAt = Date.now()
+        let startBtn = document.getElementById("start-btn");
+        if (startBtn) {
+          startBtn.addEventListener("click", function (e) {
+            e.preventDefault()
+            timer = setInterval(startTimer, 100);
+            startedAt = Date.now()
+          });
+        }
+
+        let stopBtn = document.getElementById("stop-btn");
+        if (stopBtn) {
+          stopBtn.addEventListener("click", function (e) {
+            clearInterval(timer);
+          });
+        }
+
+        const editBtn = document.getElementById("edit-btn");
+        const editForm = document.getElementById("edit-form");
+        const saveBtn = document.getElementById("save-btn");
+        if (editBtn && editForm && saveBtn) {
+          editBtn.addEventListener("click", function(e) {
+            editForm.classList.remove("hidden");
+            editBtn.classList.add("hidden");
+            saveBtn.classList.remove("hidden");
+          });
+
+          saveBtn.addEventListener("click", function(e) {
+            editForm.classList.add("hidden");
+            editBtn.classList.remove("hidden");
+            saveBtn.classList.add("hidden");
+          });
+        }
+
+        function startTimer() {
+          let hoursLabel = document.getElementById("hours");
+          let minutesLabel = document.getElementById("minutes");
+          let secondsLabel = document.getElementById("seconds");
+
+          const milliseconds = Date.now() - startedAt;
+
+          hoursLabel.textContent = (Math.floor(milliseconds / 3600000)).toString().padStart(2, '0');
+          minutesLabel.textContent = (Math.floor(milliseconds / 60000) % 60).toString().padStart(2, '0');
+          secondsLabel.textContent = (Math.floor(milliseconds / 1000) % 60).toString().padStart(2, '0');
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        onDOMContentLoaded();
       });
-    } else {
-    }
-
-    let stopBtn = document.getElementById("stop-btn");
-    if (stopBtn) {
-      stopBtn.addEventListener("click", function (e) {
-        clearInterval(timer);
-      });
-    }
-
-    const editBtn = document.getElementById("edit-btn");
-    const editForm = document.getElementById("edit-form");
-    const saveBtn = document.getElementById("save-btn");
-    editForm && editForm.setAttribute("hidden", "")
-    editBtn && editBtn.addEventListener("click", function(e) {
-
-      editForm.style.display = "block";
-      editBtn.style.display = "none";
-      saveBtn.style.display = "inline-block";
-    });
-
-    saveBtn && saveBtn.addEventListener("click", function(e) {
-      editForm.style.display = "none";
-      editBtn.style.display = "inline-block";
-      saveBtn.style.display = "none";
-    });
-
-    function startTimer() {
-      let hoursLabel = document.getElementById("hours");
-      let minutesLabel = document.getElementById("minutes");
-      let secondsLabel = document.getElementById("seconds");
-
-      const milliseconds = Date.now() - startedAt
-
-    hoursLabel.textContent = (Math.floor(milliseconds / 3600000)).toString().padStart(2, '0');
-      minutesLabel.textContent = (Math.floor(milliseconds / 60000) % 60).toString().padStart(2, '0');
-      secondsLabel.textContent = (Math.floor(milliseconds / 1000) % 60).toString().padStart(2, '0');
-    }
-  }
-
-   document.addEventListener("DOMContentLoaded", function () {
-    onDOMContentLoaded()
-  })
-</script>
+    </script>
+  </body>
+</html>
