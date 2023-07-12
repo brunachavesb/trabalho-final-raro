@@ -22,9 +22,7 @@
         <td><%= task.started_at %></td>
         <td><%= task.finished_at %></td>
         <td>
-          <% unless task.finished %>
-            <%= link_to "Iniciar", task_path(task), method: :put, data: { confirm: "Tem certeza que deseja iniciar esta tarefa?" }, params: { task: { started: true } } %>
-          <% end %>
+          <%= link_to "Abrir", task_path(task) %>
           <%= link_to "Editar", edit_task_path(task) %>
           <%= button_to "Excluir", task_path(task), method: :delete, data: { confirm: "Tem certeza que deseja excluir esta tarefa?" } %>
         </td>

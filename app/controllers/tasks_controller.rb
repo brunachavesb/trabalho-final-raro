@@ -1,4 +1,7 @@
 class TasksController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_task, only: [:show, :edit, :update, :start, :stop]
+
   def index
     @tasks = Task.order(created_at: :desc).paginate(page: params[:page], per_page: 20)
   end
@@ -25,9 +28,9 @@ class TasksController < ApplicationController
   end
 
   def update
-    @task = Task.find(params[:id])
     if @task.update(task_params)
-      redirect_to tasks_path, notice: "Tarefa atualizada com sucesso."
+      @task.update(edited: true) if @task.finished_at_changed?
+      redirect_to @task
     else
       render :edit
     end
@@ -39,9 +42,24 @@ class TasksController < ApplicationController
     redirect_to tasks_path, notice: "Tarefa excluída com sucesso."
   end
 
+  def start
+    @task.update(started: true, started_at: Time.current)
+    redirect_to @task
+  end
+
+  def stop
+    elapsed_time = Time.current - @task.started_at
+    @task.update(finished: true, finished_at: Time.current)
+    redirect_to @task
+  end
+
   private
 
+  def set_task
+    @task = Task.find(params[:id])
+  end
+
   def task_params
-    params.require(:task).permit(:project_id, :name, :description)
+    params.require(:task).permit(:project_id, :name, :description, :started, :finished, :edited, :started_at, :finished_at)
   end
 end
