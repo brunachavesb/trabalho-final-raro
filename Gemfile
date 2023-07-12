@@ -53,6 +53,8 @@ gem "dotenv", "~> 2.7", require: "dotenv/load"
 
 gem "httparty"
 
+gem "will_paginate"
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 

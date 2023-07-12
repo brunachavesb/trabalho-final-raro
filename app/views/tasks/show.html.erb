@@ -1,0 +1,78 @@
+<div class="task-container">
+  <a href="<%= tasks_path %>">Voltar</a>
+  <h1>
+    Nome: <%= @task.name %>
+  </h1>
+  <div>
+    Descrição: <%= @task.description %>
+  </div>
+  <div>
+    <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+  </div>
+  <div>
+    <%= button_to "Iniciar", start_task_path(@task), method: :put, id: "start-btn" %>
+    <%= button_to "Parar", stop_task_path(@task), method: :put, id: "stop-btn" if @task.started && !@task.finished %>
+    <%= button_to "Editar", edit_task_path(@task), method: :get, id: "edit-btn" if @task.finished %>
+    <%= form_with model: @task, url: task_path(@task), method: :patch, id: "edit-form" do |f| %>
+      <%= f.datetime_field :finished_at, id: "finish-time" %>
+      <%= f.submit "Salvar", id: "save-btn" %>
+    <% end %>
+  </div>
+</div>
+<script>
+  function onDOMContentLoaded() {
+    let timer;
+    let startedAt;
+    let editting = false;
+
+    let startBtn = document.getElementById("start-btn");
+    if (startBtn) {
+      startBtn.addEventListener("click", function (e) {
+        e.preventDefault()
+        timer = setInterval(startTimer, 100);
+        startedAt = Date.now()
+      });
+    } else {
+    }
+
+    let stopBtn = document.getElementById("stop-btn");
+    if (stopBtn) {
+      stopBtn.addEventListener("click", function (e) {
+        clearInterval(timer);
+      });
+    }
+
+    const editBtn = document.getElementById("edit-btn");
+    const editForm = document.getElementById("edit-form");
+    const saveBtn = document.getElementById("save-btn");
+    editForm && editForm.setAttribute("hidden", "")
+    editBtn && editBtn.addEventListener("click", function(e) {
+
+      editForm.style.display = "block";
+      editBtn.style.display = "none";
+      saveBtn.style.display = "inline-block";
+    });
+
+    saveBtn && saveBtn.addEventListener("click", function(e) {
+      editForm.style.display = "none";
+      editBtn.style.display = "inline-block";
+      saveBtn.style.display = "none";
+    });
+
+    function startTimer() {
+      let hoursLabel = document.getElementById("hours");
+      let minutesLabel = document.getElementById("minutes");
+      let secondsLabel = document.getElementById("seconds");
+
+      const milliseconds = Date.now() - startedAt
+
+    hoursLabel.textContent = (Math.floor(milliseconds / 3600000)).toString().padStart(2, '0');
+      minutesLabel.textContent = (Math.floor(milliseconds / 60000) % 60).toString().padStart(2, '0');
+      secondsLabel.textContent = (Math.floor(milliseconds / 1000) % 60).toString().padStart(2, '0');
+    }
+  }
+
+   document.addEventListener("DOMContentLoaded", function () {
+    onDOMContentLoaded()
+  })
+</script>
