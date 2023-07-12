@@ -15,15 +15,21 @@
       }
     </style>
   </head>
-  <body class="body-bg min-h-screen pt-12 md:pt-3 pb-6 px-2 md:px-0" style="font-family:'Lato',sans-serif;">
-    <header class="flex justify-between items-center px-4 py-2">
+  <body class="body-bg min-h-screen pb-6 px-2 md:px-0" style="font-family:'Lato',sans-serif;">
+    <header class="flex justify-between items-center px-4 py-4 bg-black bg-opacity-20">
       <div class="flex items-center">
         <h1 class="ml-2 text-white font-bold text-3xl">Pomodoro</h1>
       </div>
-      <%= link_to "Sair", custom_destroy_user_session_path, method: :get, class: "mt-4 inline-block bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded" %>
+      <div class="absolute inset-x-0 flex items-center justify-center"  style="pointer-events: none;">
+        <h1 class="text-white font-bold text-xl">Meus Projetos</h1>
+      </div>
+      <div class="flex items-center ">
+        <%= link_to "Projetos", projects_path, class: "text-white font-bold ml-4 hover:underline" %>
+        <%= link_to "Tarefas", tasks_path, class: "text-white font-bold ml-4 hover:underline mr-4" %>
+        <%= link_to "Sair", custom_destroy_user_session_path, method: :get, class: "inline-block bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded" %>
+      </div>
     </header>
-    <div class="pt-20">
-      <h1 class="text-2xl font-bold text-white text-center text-shadow mt-8">Meus Projetos</h1>
+    <div class="pt-10">
       <% if @projects.any? %>
         <table class="bg-white mt-8 mx-auto rounded-lg shadow-lg">
           <thead>
@@ -43,7 +49,7 @@
                   <%= link_to project.url, project.url, target: "_blank", class: "hover:text-violet-900" %>
                 </td>
                 <td class="border px-4 py-2 text-white">
-                  <%= button_to 'Excluir', project_path(project), method: :delete, data: { confirm: 'Tem certeza que deseja excluir esse projeto?' }, class: 'bg-purple-500 hover:bg-purple-400 ext-white font-bold py-2 px-4 rounded' %>
+                  <%= button_to 'Excluir', project_path(project), method: :delete, data: { confirm: 'Tem certeza que deseja excluir esse projeto?' }, class: 'bg-red-500 hover:bg-red-400 ext-white font-bold py-2 px-4 rounded' %>
                 </td>
               </tr>
             <% end %>
