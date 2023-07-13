@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pomodoro</title>
+    <meta name="description" content="">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      .body-bg {
+          background-color: #9921e8;
+          background-image: linear-gradient(315deg, #9921e8 0%, #5f72be 74%);
+      }
+    </style>
+  </head>
+  <body class="body-bg min-h-screen pb-6 px-2 md:px-0" style="font-family:'Lato',sans-serif;">
+    <header class="flex justify-between items-center px-4 py-4 bg-black bg-opacity-20">
+      <div class="flex items-center">
+        <h1 class="ml-2 text-white font-bold text-3xl">Pomodoro</h1>
+      </div>
+      <div class="absolute inset-x-0 flex items-center justify-center"  style="pointer-events: none;">
+        <h1 class="text-white font-bold text-xl">Registros de tarefas</h1>
+      </div>
+      <div class="flex items-center ">
+        <%= link_to "Projetos", projects_path, class: "text-white font-bold ml-4 hover:underline" %>
+        <%= link_to "Tarefas", tasks_path, class: "text-white font-bold ml-4 hover:underline mr-4" %>
+        <%= link_to "Sair", custom_destroy_user_session_path, method: :get, class: "inline-block bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded" %>
+      </div>
+    </header>
+    <div class="pt-10">
+      <div class="text-center mx-auto">
+        <%= link_to "Nova Tarefa", new_task_path, class: "mt-4 inline-block bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded shadow-lg hover:shadow-xl transition duration-200 block text-center" %>
+      </div>
+      <%= will_paginate @tasks %>
+      <table class="bg-white mt-8 mx-auto rounded-lg shadow-lg">
+        <thead>
+          <tr>
+            <th class="text-violet-800 px-4 py-2">Projeto</th>
+            <th class="text-violet-800 px-4 py-2">Nome</th>
+            <th class="text-violet-800 px-4 py-2">Descrição</th>
+            <th class="text-violet-800 px-4 py-2">Início</th>
+            <th class="text-violet-800 px-4 py-2">Término</th>
+            <th class="text-violet-800 px-4 py-2">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @tasks.each do |task| %>
+            <tr>
+              <td class="text-purple-500 border px-4 py-2"><%= task.project.name %></td>
+              <td class="text-purple-500 border px-4 py-2"><%= task.name %></td>
+              <td class="text-purple-500 border px-4 py-2"><%= task.description %></td>
+              <td class="text-purple-500 border px-4 py-2"><%= task.started_at %></td>
+              <td class="text-purple-500 border px-4 py-2"><%= task.finished_at %></td>
+              <td class="text-purple-500 border px-4 py-2 flex items-center">
+                <div class="flex space-x-2">
+                  <%= link_to "Abrir", task_path(task), class: "bg-purple-500 hover:bg-purple-400 text-white font-bold py-2.5 px-4 rounded text-xs" %>
+                  <%= link_to "Editar", edit_task_path(task), class: "bg-purple-500 hover:bg-purple-400 text-white font-bold py-2.5 px-4 rounded text-xs" %>
+                  <%= button_to "Excluir", task_path(task), method: :delete, data: { confirm: "Tem certeza que deseja excluir esta tarefa?" }, class: "bg-red-500 hover:bg-red-400 text-white font-bold py-2.5 px-4 rounded text-xs" %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
