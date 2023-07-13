@@ -30,6 +30,9 @@
       </div>
     </header>
     <div class="pt-10">
+      <div class="text-center mx-auto">
+        <%= link_to "Nova Tarefa", new_task_path, class: "mt-4 inline-block bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded shadow-lg hover:shadow-xl transition duration-200 block text-center" %>
+      </div>
       <%= will_paginate @tasks %>
       <table class="bg-white mt-8 mx-auto rounded-lg shadow-lg">
         <thead>
@@ -61,9 +64,6 @@
           <% end %>
         </tbody>
       </table>
-      <div class="text-center mx-auto">
-        <%= link_to "Nova Tarefa", new_task_path, class: "mt-4 inline-block bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded shadow-lg hover:shadow-xl transition duration-200 block text-center" %>
-      </div>
     </div>
   </body>
 </html>

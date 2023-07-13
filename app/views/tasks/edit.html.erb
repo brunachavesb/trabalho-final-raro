@@ -36,6 +36,12 @@
             <%= form.label :description, "Descrição", class: "block text-gray-700 text-sm font-bold mb-2 ml-3" %>
             <%= form.text_area :description, class: "bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3" %>
           </div>
+          <% if @task.started? %>
+            <div class="field mt-5">
+              <%= form.label :elapsed_time, "Tempo Decorrido (segundos)", class: "block text-gray-700 text-sm font-bold mb-2 ml-3" %>
+              <%= form.number_field :elapsed_time, min: 0, step: 1, class: "bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3" %>
+            </div>
+          <% end %>
           <div class="actions mt-2">
             <%= form.submit "Salvar", class: "bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 w-full rounded shadow-lg hover:shadow-xl transition duration-200 block text-center" %>
           </div>

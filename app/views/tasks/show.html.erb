@@ -21,75 +21,52 @@
       <div class="text-white text-center"><%= @task.name %></div>
       <h1 class="text-2xl font-bold text-white text-center mt-4">Descrição:</h1>
       <div class="text-white text-center"><%= @task.description %></div>
-      <div class="text-white text-center mt-10">
-        <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+      <div id="clock" 
+        data-start-time="<%= @task.started_at ? @task.started_at.iso8601 : '' %>"
+        data-end-time="<%= @task.finished_at %>" 
+        class="text-white text-center mt-10">
+        <span id="time"></span>
       </div>
       <div class="flex justify-center mt-4">
-        <%= button_to "Iniciar", start_task_path(@task), method: :put, id: "start-btn", class: "bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded mr-2" %>
-        <%= button_to "Parar", stop_task_path(@task), method: :put, id: "stop-btn", class: "bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded mr-2", disabled: !@task.started || @task.finished %>
-        <%= button_to "Editar", edit_task_path(@task), method: :get, id: "edit-btn", class: "bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded mr-2", hidden: !@task.finished %>
-        <%= form_with model: @task, url: task_path(@task), method: :patch, id: "edit-form", class: "hidden" do |f| %>
-          <%= f.datetime_field :finished_at, id: "finish-time", class: "bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3 mt-2" %>
-          <%= f.submit "Salvar", id: "save-btn", class: "bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mt-2" %>
-        <% end %>
+        <%= button_to "Iniciar", start_task_path(@task), method: :put, id: "start-btn", class: "bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded mr-2" if !@task.started %>
+        <%= button_to "Parar", stop_task_path(@task), method: :put, id: "stop-btn", class: "bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded mr-2" if @task.started && !@task.finished %>
+        <%= button_to "Editar", edit_task_path(@task), method: :get, id: "edit-btn", class: "bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded mr-2" if @task.finished %>
       </div>
       <%= link_to 'Voltar', tasks_path, class: "text-white hover:text-purple-900 hover:underline mt-4 block text-center" %>
     </div>
     <script>
       function onDOMContentLoaded() {
-        let timer;
-        let startedAt;
-        let editting = false;
+        setInterval(function() {
+          if (!document)
+            return
 
-        let startBtn = document.getElementById("start-btn");
-        if (startBtn) {
-          startBtn.addEventListener("click", function (e) {
-            e.preventDefault()
-            timer = setInterval(startTimer, 100);
-            startedAt = Date.now()
-          });
-        }
+          var clock = document.getElementById('clock');
+          if (!clock)
+            return
 
-        let stopBtn = document.getElementById("stop-btn");
-        if (stopBtn) {
-          stopBtn.addEventListener("click", function (e) {
-            clearInterval(timer);
-          });
-        }
+          var startTime = clock.dataset.startTime
+          var endTime = clock.dataset.endTime
 
-        const editBtn = document.getElementById("edit-btn");
-        const editForm = document.getElementById("edit-form");
-        const saveBtn = document.getElementById("save-btn");
-        if (editBtn && editForm && saveBtn) {
-          editBtn.addEventListener("click", function(e) {
-            editForm.classList.remove("hidden");
-            editBtn.classList.add("hidden");
-            saveBtn.classList.remove("hidden");
-          });
+          if (!startTime)
+            return;
 
-          saveBtn.addEventListener("click", function(e) {
-            editForm.classList.add("hidden");
-            editBtn.classList.remove("hidden");
-            saveBtn.classList.add("hidden");
-          });
-        }
+          var taskStartTime = new Date(startTime)
 
-        function startTimer() {
-          let hoursLabel = document.getElementById("hours");
-          let minutesLabel = document.getElementById("minutes");
-          let secondsLabel = document.getElementById("seconds");
+          var now = new Date();
+          if (endTime)
+            now = new Date(endTime)
 
-          const milliseconds = Date.now() - startedAt;
+          var timeElapsed = Math.abs(now - taskStartTime);
 
-          hoursLabel.textContent = (Math.floor(milliseconds / 3600000)).toString().padStart(2, '0');
-          minutesLabel.textContent = (Math.floor(milliseconds / 60000) % 60).toString().padStart(2, '0');
-          secondsLabel.textContent = (Math.floor(milliseconds / 1000) % 60).toString().padStart(2, '0');
-        }
+          var hours = Math.floor(timeElapsed / 36e5).toString();
+          var minutes = Math.floor((timeElapsed % 36e5) / 60000).toString().padStart(2, '0');
+          var seconds = Math.floor((timeElapsed % 60000) / 1000).toString().padStart(2, '0');
+
+          document.getElementById('time').textContent = `${hours}:${minutes}:${seconds}`;
+        }, 0);
       }
 
-      document.addEventListener("DOMContentLoaded", function () {
-        onDOMContentLoaded();
-      });
+      document.addEventListener("DOMContentLoaded", onDOMContentLoaded);
     </script>
   </body>
 </html>
