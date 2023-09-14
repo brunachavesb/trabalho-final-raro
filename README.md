@@ -32,10 +32,6 @@ Para criar uma tarefa deve selecionar um dos projetos cadastrados, adicionar um 
 No botão abrir você poderá iniciar o contador de tempo ou pará-lo.
 No botão editar, você poderá editar nome, descrição e tempo em segundos.
 
-## OBSERVAÇÃO
-Fazer o relógio me tomou muito tempo, pois eu não tenho conhecimento o bastante em js, o que se tornou muito complexo pra que eu pudesse terminar a tempo. Acabei nao conseguindo fazer a integração das tarefas com o gitlab, agrupar as tarefas e os testes.
-Existe um erro que acontece as vezes da paginação que eu tentei fazer, mas se der F5 o erro some, tentei achar mas nao deu tempo.
-
 
 ## GENS
 gens adicionadas:
